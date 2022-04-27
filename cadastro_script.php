@@ -26,8 +26,26 @@ $lrgarray = $array['rg'];
         die();
 
       }else{
-        $query = "INSERT INTO aluno(n_social,rg,senha) VALUES ('$n_social','$rg','$senha')";
-        $insert = mysql_query($query,$connect);
+       $sql = "INSERT INTO
+                    aluno(n_social, rg, senha)
+                VALUES('" . mysql_real_escape_string($_POST['n_social']) . "',
+                       '" . sha1($_POST['senha']) . "',
+                       '" . mysql_real_escape_string($_POST['rg']) . "',
+                        NOW(),
+                        0)";
+         $result = mysql_query($sql);
+        if(!$result)
+        {
+            //algo deu errado
+            echo 'Houve algo de errado com o cadastro tente novamente mais tarde.';
+            echo mysql_error();
+        }
+        else
+        {
+            echo 'Cadastro realizado com sucesso. Agora pode realizar o login <a href="login.html">Login</a>';
+        }
+    }
+}
 
         if($insert){
           echo"<script language='javascript' type='text/javascript'>
